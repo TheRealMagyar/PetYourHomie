@@ -1,30 +1,115 @@
 # Pet Your Homie
 
-A Vencord / Equicord userplugin for marking people as homies, scheduling per-person message suggestions, and quickly preparing kind, flirty, or **Happy Femboy Friday** DM drafts.
+Pet Your Homie is a Vencord and Equicord userplugin for creating personal interaction reminders for your Discord friends.
 
-This repository is the plugin folder itself. Clone it directly as `src/userplugins/petYourHomie`; do not copy the repository into another nested plugin directory.
+Mark someone as a homie, create custom events, choose when each event should be suggested, and prepare an editable DM draft with an optional Tenor GIF. The plugin never sends messages automatically.
 
 ## Features
 
-- Add a homie from a user's right-click menu or by Discord ID.
-- Create, rename, edit, or delete any event, including all bundled defaults.
-- Configure each event's templates and default schedule.
-- Add any number of Tenor GIF URLs to an event and append one randomly to each generated draft.
-- Configure separate days and times for every homie and event.
-- Replace `{name}` with the homie's nickname or Discord display name.
-- Click a scheduled notification to open the correct DM and insert a draft.
-- Use the heart button displayed directly on a homie's DM row to choose an event without right-clicking.
-- Prepare any custom event draft from the user context menu at any time.
-- Never send automatically: every draft remains editable and requires you to press Send.
+- Mark Discord users as homies from their context menu.
+- Display a heart button directly on every configured homie's DM row.
+- Create an unlimited number of custom events.
+- Rename, edit, or delete every event, including the bundled defaults.
+- Store multiple message templates for each event.
+- Add multiple Tenor GIF URLs to an event.
+- Configure different days and times for every homie and event.
+- Show clickable scheduled notifications.
+- Open the correct DM and insert an editable message draft.
+- Replace `{name}` and `{id}` variables automatically.
+- Keep all settings locally inside Vencord or Equicord.
 
-## Folder layout
+## Default events
 
-The valid installation layout is:
+The first launch creates three example events:
+
+- Happy Femboy Friday
+- Kind message
+- Flirty message
+
+These are normal custom events. You can change their names, templates, GIFs, schedules, or delete them completely.
+
+## Custom events
+
+Open **Settings → Plugins → PetYourHomie → Settings**.
+
+Each event contains:
+
+- **Event name:** The label shown in the DM heart menu and user context menu.
+- **Message templates:** One possible message per line. A random non-empty line is selected when creating a draft.
+- **Tenor GIF URLs:** One optional HTTPS Tenor URL per line. A random valid GIF is appended to the draft.
+- **Default schedule:** Determines how the event is configured when it becomes available to a homie.
+
+Supported template variables:
+
+| Variable | Replacement |
+| --- | --- |
+| `{name}` | The configured nickname, Discord display name, or username |
+| `{id}` | The homie's Discord user ID |
+
+Example templates:
+
+```text
+Happy Femboy Friday, {name}! 💖
+I hope you are having a great day, {name}! 🫶
+You crossed my mind, so here is a virtual hug. 🤗
+```
+
+## Tenor GIFs
+
+Paste normal Tenor share links or direct Tenor media links into an event's **Tenor GIF URLs** field:
+
+```text
+https://tenor.com/view/example-gif-123456
+https://media.tenor.com/example/tenor.gif
+```
+
+Only HTTPS links hosted on `tenor.com` or a `*.tenor.com` subdomain are accepted. Invalid and empty lines are ignored. If an event has several GIFs, one is selected randomly and inserted below the message.
+
+## Using the plugin
+
+### Add a homie
+
+1. Right-click a Discord user.
+2. Open **Pet Your Homie 💛**.
+3. Select **Make this person a homie**.
+
+You can also add a user by Discord ID in the plugin settings.
+
+### Prepare an interaction immediately
+
+1. Find the homie in the Direct Messages list.
+2. Click the heart button displayed on their DM row.
+3. Select one of your custom events.
+4. Review the inserted message and optional GIF.
+5. Press Send yourself when the draft is ready.
+
+The same event menu remains available from the user's right-click context menu.
+
+### Schedule suggestions
+
+Every homie has an individual schedule for every event. Enable the event, select one or more weekdays, and choose a local time.
+
+When the event becomes due, Pet Your Homie displays a notification. Clicking it opens the correct DM and inserts the generated draft. The notification is shown once per homie and event each day.
+
+Scheduling uses the computer's local timezone. The configurable reminder window determines how long an event remains due after its scheduled time. Discord must be running during that window.
+
+## Requirements
+
+- Equicord or Vencord built from source
+- Discord Desktop, Vesktop, or another supported desktop client
+- A build with userplugin support
+
+Prebuilt installer `.asar` files cannot load source userplugins directly.
+
+## Correct folder layout
+
+This repository is the plugin folder itself. Clone it directly into `src/userplugins/petYourHomie`:
 
 ```text
 Equicord/
 └── src/
     └── userplugins/
+        ├── aiPlugin/
         └── petYourHomie/
             ├── index.tsx
             ├── settings.tsx
@@ -32,64 +117,77 @@ Equicord/
             └── types.ts
 ```
 
-`index.tsx` must be directly inside `petYourHomie`. A nested `src/userplugins/petYourHomie/src/userplugins/petYourHomie` layout is invalid.
+Do not create another nested `src/userplugins/petYourHomie` directory inside the cloned repository.
 
-## Install
+## Manual installation
 
-You must already have an Equicord or Vencord source tree. Userplugins are bundled during the client build and cannot be added to the prebuilt installer `.asar`.
+You must already have a working Equicord or Vencord source tree.
 
-### Windows — Command Prompt
+### Windows Command Prompt
 
 ```bat
-cd /d "%USERPROFILE%\Documents\Equicord"
+cd /d "%USERPROFILE%\Equicord"
 if not exist src\userplugins mkdir src\userplugins
 git clone https://github.com/TheRealMagyar/PetYourHomie.git src\userplugins\petYourHomie
+pnpm install
 pnpm build
 ```
 
-### Windows — PowerShell
+### Windows PowerShell
 
 ```powershell
-Set-Location "$env:USERPROFILE\Documents\Equicord"
+Set-Location "$env:USERPROFILE\Equicord"
 New-Item -ItemType Directory -Path "src\userplugins" -Force | Out-Null
 git clone https://github.com/TheRealMagyar/PetYourHomie.git "src\userplugins\petYourHomie"
+pnpm install
 pnpm build
 ```
 
-### macOS / Linux
+### macOS and Linux
 
 ```sh
-cd "$HOME/Documents/Equicord"
+cd "$HOME/Equicord"
 mkdir -p src/userplugins
 git clone https://github.com/TheRealMagyar/PetYourHomie.git src/userplugins/petYourHomie
+pnpm install
 pnpm build
 ```
 
-Use your Vencord source directory instead of `Equicord` if applicable. Fully restart Discord after the build, then open **Settings → Plugins → PetYourHomie** and enable it.
+Use the path to your Vencord source tree instead if you are using Vencord. Fully quit Discord, including its tray process, and restart it after the build. Then enable **PetYourHomie** under **Settings → Plugins**.
 
-## venpm
-
-After a release containing `plugins.json` is published:
+## Installation with venpm
 
 ```bat
 npm.cmd install -g @kamaras/venpm
-venpm config set vencord.path %USERPROFILE%\Documents\Equicord
+venpm config set vencord.path %USERPROFILE%\Equicord
 venpm repo add https://github.com/TheRealMagyar/PetYourHomie/releases/latest/download/plugins.json --name pet-your-homie
 venpm install petYourHomie
 ```
 
-## Usage
+Point `vencord.path` at your actual Equicord or Vencord source directory if it is stored elsewhere.
 
-1. Right-click a Discord user and open **Pet Your Homie 💛**.
-2. Choose **Make this person a homie**.
-3. Open the plugin settings to create or edit events, add optional Tenor GIF URLs, and configure days and times for that person.
-4. Click the heart button on the homie's DM row for an immediate draft, use the right-click menu, or wait for a scheduled suggestion.
+## Updating
 
-Scheduling uses the computer's local timezone. If Discord is not running at the scheduled time, the suggestion can still appear within the configured grace period. Use flirty or spicy templates only between consenting adults.
+### Manual Git installation
+
+From the Equicord or Vencord source root:
+
+```sh
+git -C src/userplugins/petYourHomie pull
+pnpm build
+```
+
+### venpm installation
+
+```sh
+venpm update petYourHomie
+```
+
+Restart Discord after rebuilding or updating.
 
 ## Development
 
-Place or clone this repository at `src/userplugins/petYourHomie` inside a current Vencord or Equicord source tree, then run:
+Place this repository at `src/userplugins/petYourHomie` inside a current Vencord or Equicord source tree, then run:
 
 ```sh
 pnpm exec eslint src/userplugins/petYourHomie
@@ -97,8 +195,20 @@ pnpm testTsc
 pnpm build
 ```
 
-The plugin is a client-side suggestion helper. It does not automate sending and does not call Discord API endpoints directly.
+The standalone plugin index can be validated with:
+
+```sh
+npx --yes @kamaras/venpm validate plugins.json --strict
+```
+
+## Privacy and safety
+
+- Pet Your Homie does not send messages automatically.
+- It does not call private Discord API endpoints.
+- Homies, events, schedules, and templates are stored in local plugin settings.
+- Tenor URLs are inserted as text for Discord to embed; the plugin does not contact Tenor itself.
+- Use flirty or spicy events only between consenting adults.
 
 ## License
 
-GPL-3.0-or-later. See [LICENSE](LICENSE).
+Pet Your Homie is licensed under GPL-3.0-or-later. See [LICENSE](LICENSE).
