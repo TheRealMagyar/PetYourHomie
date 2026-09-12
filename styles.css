@@ -1,0 +1,159 @@
+/*
+ * Vencord, a Discord client mod
+ * Copyright (c) 2026 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+.pyh-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.pyh-help,
+.pyh-id {
+    color: var(--text-muted);
+}
+
+.pyh-add-row {
+    display: grid;
+    grid-template-columns: minmax(180px, 1.4fr) minmax(150px, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+}
+
+.pyh-button,
+.pyh-day {
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--white-500);
+    font-weight: 600;
+}
+
+.pyh-button {
+    min-height: 38px;
+    padding: 0 14px;
+}
+
+.pyh-button:disabled,
+.pyh-day:disabled {
+    cursor: not-allowed;
+    opacity: .45;
+}
+
+.pyh-button-primary {
+    background: var(--brand-500);
+}
+
+.pyh-button-danger {
+    background: var(--status-danger);
+}
+
+.pyh-error {
+    color: var(--text-danger);
+    font-size: 13px;
+}
+
+.pyh-empty {
+    padding: 18px;
+    border: 1px dashed var(--border-muted);
+    border-radius: 8px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.pyh-card {
+    padding: 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    background: var(--background-secondary);
+}
+
+.pyh-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.pyh-id {
+    margin-top: 2px;
+    font-family: var(--font-code);
+    font-size: 12px;
+}
+
+.pyh-field {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    color: var(--header-secondary);
+    font-weight: 600;
+}
+
+.pyh-schedule {
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) 92px minmax(210px, 1.4fr);
+    gap: 12px;
+    align-items: center;
+    padding: 9px 0;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.pyh-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-normal);
+}
+
+.pyh-toggle input {
+    accent-color: var(--brand-500);
+}
+
+.pyh-time {
+    box-sizing: border-box;
+    height: 32px;
+    padding: 0 7px;
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    background: var(--input-background);
+    color: var(--text-normal);
+    color-scheme: dark;
+}
+
+.theme-light .pyh-time {
+    color-scheme: light;
+}
+
+.pyh-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.pyh-day {
+    min-width: 28px;
+    height: 28px;
+    padding: 0 4px;
+    background: var(--background-modifier-hover);
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.pyh-day-active {
+    background: var(--brand-500);
+    color: var(--white-500);
+}
+
+@media (max-width: 760px) {
+    .pyh-add-row,
+    .pyh-schedule,
+    .pyh-field {
+        grid-template-columns: 1fr;
+    }
+}
