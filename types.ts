@@ -14,6 +14,7 @@ export interface HomieEvent {
     id: string;
     name: string;
     templates: string;
+    tenorGifs: string;
     defaultSchedule: HomieSchedule;
 }
 
@@ -30,18 +31,21 @@ export const DEFAULT_EVENTS: HomieEvent[] = [
         id: "friday",
         name: "Happy Femboy Friday",
         templates: "Happy Femboy Friday, {name}! 💖\nWishing you the happiest Femboy Friday, {name}! ✨",
+        tenorGifs: "",
         defaultSchedule: { enabled: true, time: "10:00", weekdays: [5] }
     },
     {
         id: "kind",
         name: "Kind message",
         templates: "Just a reminder that you're awesome, {name}. 💛\nI hope you're having a lovely day, {name}! 🫶\nYou crossed my mind, so here's a virtual hug, {name}. 🤗",
+        tenorGifs: "",
         defaultSchedule: { enabled: false, time: "18:00", weekdays: [1, 3] }
     },
     {
         id: "flirty",
         name: "Flirty message",
         templates: "I miss you, {name}. Come a little closer 😏\nYou're looking dangerously good today, {name}. 🔥",
+        tenorGifs: "",
         defaultSchedule: { enabled: false, time: "21:00", weekdays: [5, 6] }
     }
 ];
@@ -61,6 +65,7 @@ export function normalizeEvent(event: HomieEvent): HomieEvent {
         id: event.id,
         name: event.name.trim() || "Untitled event",
         templates: event.templates ?? "",
+        tenorGifs: event.tenorGifs ?? "",
         defaultSchedule: normalizeSchedule(event.defaultSchedule, {
             enabled: false,
             time: "18:00",
@@ -74,6 +79,7 @@ export function createEvent(name: string, templates: string): HomieEvent {
         id: `custom-${crypto.randomUUID()}`,
         name: name.trim(),
         templates: templates.trim(),
+        tenorGifs: "",
         defaultSchedule: { enabled: false, time: "18:00", weekdays: [5] }
     };
 }

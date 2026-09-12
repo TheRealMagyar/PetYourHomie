@@ -7,6 +7,7 @@
 import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { showNotification } from "@api/Notifications";
 import { insertTextIntoChatInputBox, openPrivateChannel } from "@utils/discord";
+import { parseUrl } from "@utils/misc";
 import definePlugin from "@utils/types";
 import type { Channel, User } from "@vencord/discord-types";
 import { ContextMenuApi, Menu, Tooltip, UserStore } from "@webpack/common";
@@ -61,7 +62,18 @@ function makeMessage(homie: Homie, event: HomieEvent) {
         .filter(Boolean);
     const template = templates[Math.floor(Math.random() * templates.length)] ?? "Hi, {name}! 💛";
     const name = getHomieName(homie);
-    return template.replaceAll("{name}", name).replaceAll("{id}", homie.id);
+    const message = template.replaceAll("{name}", name).replaceAll("{id}", homie.id);
+    const tenorGifs = event.tenorGifs
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(line => {
+            const url = parseUrl(line);
+            return url?.protocol === "https:"
+                && (url.hostname === "tenor.com" || url.hostname.endsWith(".tenor.com"));
+        });
+    const tenorGif = tenorGifs[Math.floor(Math.random() * tenorGifs.length)];
+
+    return tenorGif ? `${message}\n${tenorGif}` : message;
 }
 
 function prepareDraft(homie: Homie, event: HomieEvent, message = makeMessage(homie, event)) {

@@ -76,6 +76,7 @@ function EventManager({ setValue }: EventManagerProps) {
     const normalizedEvents = events.map(normalizeEvent);
     const [name, setName] = useState("");
     const [templates, setTemplates] = useState("");
+    const [tenorGifs, setTenorGifs] = useState("");
 
     const updateEvent = (id: string, transform: (event: HomieEvent) => HomieEvent) => {
         setValue(normalizedEvents.map(event => event.id === id ? transform(event) : event));
@@ -91,9 +92,10 @@ function EventManager({ setValue }: EventManagerProps) {
 
     const addEvent = () => {
         if (!name.trim()) return;
-        setValue([...normalizedEvents, createEvent(name, templates)]);
+        setValue([...normalizedEvents, { ...createEvent(name, templates), tenorGifs: tenorGifs.trim() }]);
         setName("");
         setTemplates("");
+        setTenorGifs("");
     };
 
     return (
@@ -134,6 +136,17 @@ function EventManager({ setValue }: EventManagerProps) {
                         />
                     </label>
 
+                    <label className="pyh-template-field">
+                        <span>Tenor GIF URLs</span>
+                        <TextArea
+                            autosize
+                            value={event.tenorGifs}
+                            onChange={value => updateEvent(event.id, current => ({ ...current, tenorGifs: value }))}
+                            placeholder="One https://tenor.com GIF link per line (optional)"
+                        />
+                        <small className="pyh-help">One valid Tenor GIF is selected randomly and appended to the draft.</small>
+                    </label>
+
                     <div className="pyh-default-label">Default schedule</div>
                     <ScheduleEditor
                         label="Enable for homies by default"
@@ -154,6 +167,12 @@ function EventManager({ setValue }: EventManagerProps) {
                     value={templates}
                     onChange={setTemplates}
                     placeholder="Message templates, one per line (optional)"
+                />
+                <TextArea
+                    autosize
+                    value={tenorGifs}
+                    onChange={setTenorGifs}
+                    placeholder="Tenor GIF URLs, one per line (optional)"
                 />
                 <Button disabled={!name.trim()} onClick={addEvent}>Create event</Button>
             </section>
