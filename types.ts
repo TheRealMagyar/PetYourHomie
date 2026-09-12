@@ -4,59 +4,98 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-export type InteractionKind = "friday" | "kind" | "flirty";
-
 export interface HomieSchedule {
     enabled: boolean;
     time: string;
     weekdays: number[];
 }
 
+export interface HomieEvent {
+    id: string;
+    name: string;
+    templates: string;
+    defaultSchedule: HomieSchedule;
+}
+
 export interface Homie {
     id: string;
     nickname: string;
-    schedules: Record<InteractionKind, HomieSchedule>;
+    schedules: Record<string, HomieSchedule>;
 }
-
-export const INTERACTION_LABELS: Record<InteractionKind, string> = {
-    friday: "Happy Femboy Friday",
-    kind: "Kind message",
-    flirty: "Flirty message"
-};
-
-export const INTERACTION_KINDS: InteractionKind[] = ["friday", "kind", "flirty"];
 
 export const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export function createHomie(id: string, nickname = ""): Homie {
+export const DEFAULT_EVENTS: HomieEvent[] = [
+    {
+        id: "friday",
+        name: "Happy Femboy Friday",
+        templates: "Happy Femboy Friday, {name}! 💖\nWishing you the happiest Femboy Friday, {name}! ✨",
+        defaultSchedule: { enabled: true, time: "10:00", weekdays: [5] }
+    },
+    {
+        id: "kind",
+        name: "Kind message",
+        templates: "Just a reminder that you're awesome, {name}. 💛\nI hope you're having a lovely day, {name}! 🫶\nYou crossed my mind, so here's a virtual hug, {name}. 🤗",
+        defaultSchedule: { enabled: false, time: "18:00", weekdays: [1, 3] }
+    },
+    {
+        id: "flirty",
+        name: "Flirty message",
+        templates: "I miss you, {name}. Come a little closer 😏\nYou're looking dangerously good today, {name}. 🔥",
+        defaultSchedule: { enabled: false, time: "21:00", weekdays: [5, 6] }
+    }
+];
+
+function normalizeSchedule(value: Partial<HomieSchedule> | undefined, fallback: HomieSchedule): HomieSchedule {
     return {
-        id,
-        nickname,
-        schedules: {
-            friday: { enabled: true, time: "10:00", weekdays: [5] },
-            kind: { enabled: false, time: "18:00", weekdays: [1, 3] },
-            flirty: { enabled: false, time: "21:00", weekdays: [5, 6] }
-        }
+        enabled: value?.enabled === true,
+        time: value?.time && /^([01]\d|2[0-3]):[0-5]\d$/.test(value.time) ? value.time : fallback.time,
+        weekdays: Array.isArray(value?.weekdays)
+            ? value.weekdays.filter(day => Number.isInteger(day) && day >= 0 && day <= 6)
+            : [...fallback.weekdays]
     };
 }
 
-export function normalizeHomie(value: Partial<Homie> & Pick<Homie, "id">): Homie {
-    const fallback = createHomie(value.id, value.nickname ?? "");
+export function normalizeEvent(event: HomieEvent): HomieEvent {
+    return {
+        id: event.id,
+        name: event.name.trim() || "Untitled event",
+        templates: event.templates ?? "",
+        defaultSchedule: normalizeSchedule(event.defaultSchedule, {
+            enabled: false,
+            time: "18:00",
+            weekdays: [5]
+        })
+    };
+}
 
-    for (const kind of INTERACTION_KINDS) {
-        const schedule = value.schedules?.[kind];
-        if (!schedule) continue;
+export function createEvent(name: string, templates: string): HomieEvent {
+    return {
+        id: `custom-${crypto.randomUUID()}`,
+        name: name.trim(),
+        templates: templates.trim(),
+        defaultSchedule: { enabled: false, time: "18:00", weekdays: [5] }
+    };
+}
 
-        fallback.schedules[kind] = {
-            enabled: schedule.enabled === true,
-            time: /^([01]\d|2[0-3]):[0-5]\d$/.test(schedule.time) ? schedule.time : fallback.schedules[kind].time,
-            weekdays: kind === "friday"
-                ? [5]
-                : Array.isArray(schedule.weekdays)
-                ? schedule.weekdays.filter(day => Number.isInteger(day) && day >= 0 && day <= 6)
-                : fallback.schedules[kind].weekdays
-        };
-    }
+export function createHomie(id: string, events: HomieEvent[], nickname = ""): Homie {
+    return {
+        id,
+        nickname,
+        schedules: Object.fromEntries(events.map(event => [
+            event.id,
+            normalizeSchedule(undefined, event.defaultSchedule)
+        ]))
+    };
+}
 
-    return fallback;
+export function normalizeHomie(value: Partial<Homie> & Pick<Homie, "id">, events: HomieEvent[]): Homie {
+    return {
+        id: value.id,
+        nickname: value.nickname ?? "",
+        schedules: Object.fromEntries(events.map(event => [
+            event.id,
+            normalizeSchedule(value.schedules?.[event.id], event.defaultSchedule)
+        ]))
+    };
 }

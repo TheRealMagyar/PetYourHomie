@@ -7,11 +7,13 @@ This repository is the plugin folder itself. Clone it directly as `src/userplugi
 ## Features
 
 - Add a homie from a user's right-click menu or by Discord ID.
-- Configure separate days and times for every homie and interaction type.
-- Use editable message templates, one template per line.
+- Create, rename, edit, or delete any event, including all bundled defaults.
+- Configure each event's templates and default schedule.
+- Configure separate days and times for every homie and event.
 - Replace `{name}` with the homie's nickname or Discord display name.
 - Click a scheduled notification to open the correct DM and insert a draft.
-- Prepare Happy Femboy Friday, kind, or flirty drafts from the user context menu at any time.
+- Use the heart button displayed directly on a homie's DM row to choose an event without right-clicking.
+- Prepare any custom event draft from the user context menu at any time.
 - Never send automatically: every draft remains editable and requires you to press Send.
 
 ## Folder layout
@@ -79,8 +81,8 @@ venpm install petYourHomie
 
 1. Right-click a Discord user and open **Pet Your Homie 💛**.
 2. Choose **Make this person a homie**.
-3. Open the plugin settings to configure days, times, and templates for that person.
-4. Use the same right-click menu for an immediate draft, or wait for a scheduled suggestion.
+3. Open the plugin settings to create or edit events and configure days and times for that person.
+4. Click the heart button on the homie's DM row for an immediate draft, use the right-click menu, or wait for a scheduled suggestion.
 
 Scheduling uses the computer's local timezone. If Discord is not running at the scheduled time, the suggestion can still appear within the configured grace period. Use flirty or spicy templates only between consenting adults.
 

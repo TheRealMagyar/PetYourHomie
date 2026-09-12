@@ -23,7 +23,6 @@
     align-items: center;
 }
 
-.pyh-button,
 .pyh-day {
     border: 0;
     border-radius: 4px;
@@ -32,23 +31,9 @@
     font-weight: 600;
 }
 
-.pyh-button {
-    min-height: 38px;
-    padding: 0 14px;
-}
-
-.pyh-button:disabled,
 .pyh-day:disabled {
     cursor: not-allowed;
     opacity: .45;
-}
-
-.pyh-button-primary {
-    background: var(--brand-500);
-}
-
-.pyh-button-danger {
-    background: var(--status-danger);
 }
 
 .pyh-error {
@@ -77,6 +62,31 @@
     gap: 12px;
     align-items: center;
     margin-bottom: 12px;
+}
+
+.pyh-event-card .pyh-card-header > :first-child {
+    flex: 1;
+}
+
+.pyh-template-field,
+.pyh-create-event {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pyh-template-field {
+    margin-bottom: 12px;
+    color: var(--header-secondary);
+    font-weight: 600;
+}
+
+.pyh-default-label {
+    margin-bottom: 4px;
+    color: var(--header-secondary);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .pyh-id {
@@ -148,6 +158,26 @@
 .pyh-day-active {
     background: var(--brand-500);
     color: var(--white-500);
+}
+
+.pyh-dm-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.pyh-dm-button:hover,
+.pyh-dm-button:focus-visible {
+    background: var(--background-modifier-hover);
+    color: var(--brand-500);
 }
 
 @media (max-width: 760px) {

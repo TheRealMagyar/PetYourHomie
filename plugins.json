@@ -4,8 +4,8 @@
   "description": "Scheduled kind, flirty, and Happy Femboy Friday message suggestions for your Discord homies.",
   "plugins": {
     "petYourHomie": {
-      "version": "1.0.0",
-      "description": "Manage homies and prepare scheduled interaction drafts from Discord.",
+      "version": "1.1.0",
+      "description": "Create custom homie events and prepare scheduled interaction drafts from Discord.",
       "authors": [
         {
           "name": "TheRealMagyar",
@@ -19,6 +19,9 @@
       "versions": {
         "1.0.0": {
           "git_tag": "v1.0.0"
+        },
+        "1.1.0": {
+          "git_tag": "v1.1.0"
         }
       }
     }
