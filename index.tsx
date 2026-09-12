@@ -129,14 +129,14 @@ function HeartIcon() {
 
 interface DmDecoratorProps {
     type: "guild" | "dm";
-    user: User;
-    channel: Channel;
+    user?: User;
+    channel?: Channel;
     isOwner: boolean;
 }
 
 function HomieDmButton({ type, user }: DmDecoratorProps) {
     const { events: storedEvents = [], homies = [] } = settings.use(DM_BUTTON_SETTING_KEYS);
-    if (type !== "dm") return null;
+    if (type !== "dm" || !user) return null;
 
     const events = storedEvents.map(normalizeEvent);
     const homie = homies.map(item => normalizeHomie(item, events)).find(item => item.id === user.id);

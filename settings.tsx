@@ -83,11 +83,11 @@ function EventManager({ setValue }: EventManagerProps) {
     };
 
     const removeEvent = (id: string) => {
-        setValue(normalizedEvents.filter(event => event.id !== id));
-        settings.store.homies = homies.map(homie => ({
-            ...normalizeHomie(homie, normalizedEvents),
-            schedules: Object.fromEntries(Object.entries(homie.schedules).filter(([eventId]) => eventId !== id))
-        }));
+        const remainingEvents = normalizedEvents.filter(event => event.id !== id);
+
+        // Keep homie schedules in sync before the debounced component setting is saved.
+        settings.store.homies = homies.map(homie => normalizeHomie(homie, remainingEvents));
+        setValue(remainingEvents);
     };
 
     const addEvent = () => {

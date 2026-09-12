@@ -4,7 +4,7 @@
   "description": "Scheduled kind, flirty, and Happy Femboy Friday message suggestions for your Discord homies.",
   "plugins": {
     "petYourHomie": {
-      "version": "1.2.0",
+      "version": "1.2.1",
       "description": "Create custom homie events with message templates, Tenor GIFs, and scheduled Discord drafts.",
       "authors": [
         {
@@ -25,6 +25,9 @@
         },
         "1.2.0": {
           "git_tag": "v1.2.0"
+        },
+        "1.2.1": {
+          "git_tag": "v1.2.1"
         }
       }
     }
